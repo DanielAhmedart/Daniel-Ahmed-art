@@ -1,41 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Ahmed — Visual Artist</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Daniel Ahmed | Visual Artist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Jost:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --ink: #0a0a0a;
-            --warm: #c8a96e;
-            --muted: #8a8070;
-            --light: #faf8f4;
-            --cream: #f5f0e8;
-        }
-        *,*::before,*::after { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Jost', sans-serif; background: var(--light); color: var(--ink); line-height: 1.6; }
-        nav { position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 3rem; background: rgba(250, 248, 244, 0.9); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; letter-spacing: 2px; text-decoration: none; color: var(--ink); }
-        .nav-links a { text-decoration: none; color: var(--ink); font-size: 0.9rem; margin-left: 2rem; text-transform: uppercase; letter-spacing: 1px; }
-        .hero { padding: 12rem 2rem 6rem; text-align: center; background: var(--cream); }
-        .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 300; margin-bottom: 1rem; }
-        .hero p { color: var(--muted); font-size: 1.2rem; max-width: 700px; margin: 0 auto 2.5rem; }
-        .price { font-size: 2.2rem; color: var(--warm); margin-bottom: 2rem; font-weight: 300; }
-        .btn { display: inline-block; padding: 1.2rem 3.5rem; background: var(--ink); color: #fff; text-decoration: none; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
-        .btn:hover { background: var(--warm); transform: translateY(-3px); }
-        .gallery-title { text-align: center; padding: 4rem 0 2rem; font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; padding: 2rem 3rem 6rem; }
-        .art-card { background: #fff; border: 1px solid rgba(0,0,0,0.05); transition: 0.4s; padding: 1rem; }
-        .art-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .placeholder-img { width: 100%; aspect-ratio: 1/1; background: #eee; display: flex; align-items: center; justify-content: center; color: #aaa; margin-bottom: 1rem; }
-        footer { padding: 4rem; text-align: center; border-top: 1px solid #eee; color: var(--muted); }
+        :root { --gold: #c8a96e; --dark: #0a0a0a; --bg: #faf8f4; }
+        body { margin: 0; background: var(--bg); font-family: 'Jost', sans-serif; color: var(--dark); }
+        
+        /* Navigation */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 2rem 5%; background: rgba(250, 248, 244, 0.95); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #eee; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 2rem; letter-spacing: 2px; }
+        .nav-links a { margin-left: 20px; text-decoration: none; color: var(--dark); font-size: 0.9rem; text-transform: uppercase; }
+
+        /* Hero Section */
+        .hero { text-align: center; padding: 10rem 5% 5rem; background: #f5f0e8; }
+        .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 10vw, 5rem); font-weight: 400; margin-bottom: 2rem; }
+        .hero p { max-width: 600px; margin: 0 auto 3rem; color: #666; font-size: 1.2rem; line-height: 1.8; }
+        .price { font-size: 2.5rem; color: var(--gold); margin-bottom: 3rem; font-weight: 300; }
+
+        /* Button */
+        .btn { display: inline-block; padding: 1.2rem 3.5rem; background: var(--dark); color: #fff; text-decoration: none; letter-spacing: 2px; transition: 0.3s; text-transform: uppercase; }
+        .btn:hover { background: var(--gold); transform: translateY(-3px); }
+
+        /* Gallery Placeholder */
+        .gallery { padding: 5rem 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .art-item { border: 1px solid #eee; padding: 15px; background: #fff; text-align: center; }
+        .art-img { width: 100%; aspect-ratio: 1/1; background: #eee; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: #aaa; }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="#" class="logo">DANIEL AHMED</a>
+        <div class="logo">DANIEL AHMED</div>
         <div class="nav-links">
             <a href="#gallery">Gallery</a>
             <a href="https://www.instagram.com/daniel_art4">Instagram</a>
@@ -45,23 +43,18 @@
 
     <section class="hero">
         <h1>Art that touches the soul</h1>
-        <p>Where surrealism meets identity and memory — paintings that carry deep questions about humanity.</p>
+        <p>Surrealism meets identity and memory — original paintings that explore the deep questions of humanity.</p>
         <div class="price">$700.00</div>
         <a href="https://wa.me/213669486120" class="btn">Inquire via WhatsApp</a>
     </section>
 
-    <h2 id="gallery" class="gallery-title">Current Collection</h2>
-    <div class="gallery-grid">
-        <div class="art-card">
-            <div class="placeholder-img">The Night City</div>
-            <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.6rem;">The Night City</h3>
-            <p style="color:var(--warm)">Original Artwork — $700</p>
+    <div id="gallery" class="gallery">
+        <div class="art-item">
+            <div class="art-img">Featured Work</div>
+            <h3 style="font-family:'Cormorant Garamond', serif; font-size: 1.5rem;">The Night City</h3>
+            <p style="color:var(--gold)">$700.00</p>
         </div>
-        </div>
-
-    <footer>
-        <p>&copy; 2026 Daniel Ahmed. All rights reserved.</p>
-    </footer>
+    </div>
 
 </body>
 </html>
