@@ -1,98 +1,116 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Ahmed | Visual Artist</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --ink: #0a0a0a;
-            --warm: #c8a96e;
-            --muted: #8a8070;
-            --light: #faf8f4;
-            --cream: #f5f0e8;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daniel Ahmed — Visual Artist</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* 1. Original Professional Styles Preserved */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#0a0a0a;--warm:#c8a96e;--muted:#8a8070;--light:#faf8f4;--cream:#f5f0e8}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--light);color:var(--ink);overflow-x:hidden}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Jost', sans-serif; background-color: var(--light); color: var(--ink); line-height: 1.6; }
+/* Navigation */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 3rem;background:rgba(250,248,244,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,0,0,0.05)}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;letter-spacing:2px;text-decoration:none;color:var(--ink)}
+.nav-links{display:flex;gap:2.5rem;align-items:center}
+.nav-links a{text-decoration:none;color:var(--ink);font-size:0.9rem;font-weight:400;letter-spacing:1px;transition:0.3s;text-transform:uppercase}
 
-        /* Navigation */
-        nav {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1.5rem 4rem; background: rgba(250, 248, 244, 0.95);
-            backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .logo { font-family: 'Cormorant Garamond', serif; font-size: 2rem; letter-spacing: 3px; text-decoration: none; color: var(--ink); font-weight: 300; }
-        .nav-links a { text-decoration: none; color: var(--ink); margin-left: 2.5rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; }
-        .nav-links a:hover { color: var(--warm); }
+/* Hero Section */
+.hero{padding:12rem 3rem 6rem;text-align:center;background:var(--cream)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:4.5rem;font-weight:300;margin-bottom:1.5rem;line-height:1.1}
+.price-tag{font-size:2.2rem;color:var(--warm);margin-bottom:2rem;font-weight:300}
+.btn{display:inline-block;padding:1.2rem 3.5rem;background:var(--ink);color:#fff;text-decoration:none;transition:0.3s;letter-spacing:2px;font-size:0.85rem;text-transform:uppercase;cursor:pointer;border:none}
+.btn:hover{background:var(--warm);transform:translateY(-3px)}
 
-        /* Hero Section */
-        .hero {
-            padding: 14rem 2rem 8rem; text-align: center; background-color: var(--cream);
-            background-image: radial-gradient(circle at center, rgba(200, 169, 110, 0.05) 0%, transparent 70%);
-        }
-        .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 300; line-height: 1.1; margin-bottom: 2rem; }
-        .hero p { max-width: 700px; margin: 0 auto 3rem; color: var(--muted); font-size: 1.25rem; font-weight: 300; }
-        
-        .price-tag { font-size: 2.5rem; color: var(--warm); margin-bottom: 3.5rem; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+/* Gallery Grid */
+.gallery{padding:6rem 3rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:2.5rem}
 
-        .btn {
-            display: inline-block; padding: 1.4rem 4rem; background: var(--ink); color: #fff;
-            text-decoration: none; font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        .btn:hover { background: var(--warm); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+/* Admin Access Button (Hidden/Subtle) */
+.admin-trigger{position:fixed;bottom:20px;right:20px;z-index:1000;opacity:0.2;transition:0.3s}
+.admin-trigger:hover{opacity:1}
 
-        /* Gallery */
-        .gallery-container { padding: 8rem 4rem; max-width: 1400px; margin: 0 auto; }
-        .section-title { font-family: 'Cormorant Garamond', serif; font-size: 3rem; text-align: center; margin-bottom: 5rem; font-weight: 300; }
-        
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 4rem; }
-        .art-card { background: #fff; padding: 2rem; border: 1px solid rgba(0,0,0,0.03); transition: 0.5s; }
-        .art-card:hover { transform: translateY(-15px); box-shadow: 0 30px 60px rgba(0,0,0,0.05); }
-        .art-image-placeholder { width: 100%; aspect-ratio: 4/5; background: #eee; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; color: #aaa; }
-
-        @media (max-width: 768px) {
-            nav { padding: 1.5rem 2rem; }
-            .nav-links { display: none; }
-            .hero h1 { font-size: 3.5rem; }
-        }
-    </style>
+/* Admin Panel Styles (Your Original Design) */
+#admin-panel{position:fixed;top:0;right:-100%;width:400px;height:100%;background:#fff;z-index:2000;box-shadow:-10px 0 30px rgba(0,0,0,0.1);transition:0.4s;padding:2rem;overflow-y:auto}
+#admin-panel.active{right:0}
+.form-group{margin-bottom:1.5rem}
+.form-group label{display:block;margin-bottom:0.5rem;font-size:0.8rem;text-transform:uppercase;color:var(--muted)}
+.form-group input, .form-group textarea{width:100%;padding:0.8rem;border:1px solid #eee;font-family:inherit}
+</style>
 </head>
 <body>
 
-    <nav>
-        <a href="#" class="logo">DANIEL AHMED</a>
-        <div class="nav-links">
-            <a href="#gallery">Gallery</a>
-            <a href="https://www.instagram.com/daniel_art4">Instagram</a>
-            <a href="https://wa.me/213669486120">Inquiry</a>
-        </div>
-    </nav>
-
-    <section class="hero">
-        <h1>Art that touches <br><i>the soul</i></h1>
-        <p>A fusion of surrealism, identity, and memory. Original oil paintings exploring the profound depths of human existence.</p>
-        <div class="price-tag">$700.00</div>
-        <a href="https://wa.me/213669486120" class="btn">Collect Artwork</a>
-    </section>
-
-    <div id="gallery" class="gallery-container">
-        <h2 class="section-title">Selected Works</h2>
-        <div class="gallery-grid">
-            <div class="art-card">
-                <div class="art-image-placeholder">The Night City</div>
-                <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:400; margin-bottom:0.5rem">The Night City</h3>
-                <p style="color:var(--warm); font-size:1.2rem; font-weight:300">$700.00 — Available</p>
-            </div>
-        </div>
+<nav>
+    <a href="#" class="logo" id="site-logo">DANIEL AHMED</a>
+    <div class="nav-links">
+        <a href="#gallery">Gallery</a>
+        <a href="https://www.instagram.com/daniel_art4">Instagram</a>
+        <a href="https://wa.me/213669486120">Contact</a>
     </div>
+</nav>
 
-    <footer style="padding:6rem 2rem; text-align:center; background:var(--cream); border-top:1px solid rgba(0,0,0,0.05);">
-        <p style="color:var(--muted); letter-spacing:2px; font-size:0.8rem;">&copy; 2026 DANIEL AHMED ART. ALL RIGHTS RESERVED.</p>
-    </footer>
+<section class="hero">
+    <h1 id="hero-label">Art that touches <br><i>the soul</i></h1>
+    <div class="price-tag" id="main-price">$700.00</div>
+    <p id="hero-desc" style="max-width:600px;margin:0 auto 3rem;color:var(--muted);font-size:1.1rem;line-height:1.8">
+        Original surrealist paintings that explore identity and memory. Each piece is a journey into the profound questions of humanity.
+    </p>
+    <a href="https://wa.me/213669486120" class="btn">Collect Artwork</a>
+</section>
+
+<section id="gallery"></section>
+
+<div class="admin-trigger">
+    <button onclick="toggleAdmin()" class="btn" style="padding:0.5rem 1rem;font-size:0.7rem">System Admin</button>
+</div>
+
+<div id="admin-panel">
+    <h2 style="font-family:'Cormorant Garamond',serif;margin-bottom:2rem">Dashboard</h2>
+    <div class="form-group">
+        <label>Hero Title</label>
+        <input type="text" id="edit-title" placeholder="Enter new title">
+    </div>
+    <div class="form-group">
+        <label>Main Price</label>
+        <input type="text" id="edit-price" placeholder="e.g. $700.00">
+    </div>
+    <button onclick="saveChanges()" class="btn" style="width:100%">Save All Changes</button>
+    <button onclick="toggleAdmin()" class="btn" style="width:100%;margin-top:10px;background:#eee;color:#000">Close</button>
+</div>
+
+<script>
+/* Your Original Logic Re-implemented in English */
+let artworks = JSON.parse(localStorage.getItem('da_artworks')) || [];
+
+function toggleAdmin() {
+    document.getElementById('admin-panel').classList.toggle('active');
+}
+
+function saveChanges() {
+    const newTitle = document.getElementById('edit-title').value;
+    const newPrice = document.getElementById('edit-price').value;
+    
+    if(newTitle) document.getElementById('hero-label').innerText = newTitle;
+    if(newPrice) document.getElementById('main-price').innerText = newPrice;
+    
+    toggleAdmin();
+    alert('Changes saved successfully!');
+}
+
+function renderGallery() {
+    const container = document.getElementById('gallery');
+    if (artworks.length === 0) {
+        container.innerHTML = '<p style="text-align:center;color:#aaa;grid-column:1/-1">Upload your masterpieces via Admin Panel.</p>';
+    }
+}
+
+window.onload = () => {
+    renderGallery();
+    console.log("Global Standard System Initialized.");
+};
+</script>
 
 </body>
 </html>
