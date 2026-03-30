@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daniel Ahmed — Visual Artist</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&family=Tajawal:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#0a0a0a;--warm:#c8a96e;--muted:#8a8070;--light:#faf8f4;--cream:#f5f0e8}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--light);color:var(--ink);overflow-x:hidden}
+body.rtl{font-family:'Tajawal',sans-serif;direction:rtl}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 3rem;background:rgba(250,248,244,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,169,110,0.2);gap:1rem;flex-wrap:wrap}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;letter-spacing:.15em;color:var(--ink);text-decoration:none}
+.nav-links{display:flex;gap:1.5rem;list-style:none;align-items:center}
+.nav-links a{font-size:.75rem;letter-spacing:.1em;color:var(--muted);text-decoration:none;transition:color .3s;text-transform:uppercase}
+.nav-links a:hover{color:var(--ink)}
+.nav-actions{display:flex;gap:.6rem;align-items:center}
+.btn-lang{background:transparent;border:1px solid var(--warm);color:var(--warm);padding:.4rem .9rem;font-size:.7rem;letter-spacing:.12em;cursor:pointer;font-family:inherit;transition:all .3s;text-transform:uppercase}
+.btn-lang:hover{background:var(--warm);color:#fff}
+.btn-admin{background:var(--ink);color:#fff;border:none;padding:.4rem .9rem;font-size:.7rem;letter-spacing:.12em;cursor:pointer;font-family:inherit;transition:opacity .3s;text-transform:uppercase}
+.btn-admin:hover{opacity:.75}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:75px}
+.hero-text{display:flex;flex-direction:column;justify-content:center;padding:5rem 3rem 5rem 5rem}
+.hero-label{font-size:.68rem;letter-spacing:.25em;color:var(--warm);text-transform:uppercase;margin-bottom:1.2rem}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,4.5vw,5rem);font-weight:300;line-height:1.08;margin-bottom:1.8rem}
+.hero-title em{font-style:italic;color:var(--warm)}
+.hero-bio{font-size:.95rem;line-height:1.85;color:var(--muted);max-width:400px;margin-bottom:2.5rem}
+.hero-cta{display:inline-block;padding:.9rem 2.2rem;border:1px solid var(--ink);font-size:.72rem;letter-spacing:.18em;text-decoration:none;color:var(--ink);transition:all .3s;align-self:flex-start;text-transform:uppercase}
+.hero-cta:hover{background:var(--ink);color:var(--light)}
+.hero-image{position:relative;overflow:hidden;background:#1a1410}
+.hero-image img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:transform 8s}
+.hero-image:hover img{transform:scale(1.03)}
+.hero-overlay{position:absolute;bottom:1.5rem;right:1.5rem;background:rgba(250,248,244,.92);padding:.8rem 1.2rem;backdrop-filter:blur(8px)}
+.hero-overlay p{font-family:'Cormorant Garamond',serif;font-size:.82rem;font-style:italic}
+
+/* SECTIONS */
+section{padding:6rem 3rem}
+.section-header{display:flex;align-items:baseline;gap:1.2rem;margin-bottom:3.5rem}
+.section-number{font-family:'Cormorant Garamond',serif;font-size:.82rem;color:var(--warm)}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:300}
+.section-line{flex:1;height:1px;background:rgba(200,169,110,.3);margin-left:1rem}
+body.rtl .section-line{margin-left:0;margin-right:1rem}
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.artwork-card{position:relative;background:#1a1410;overflow:hidden;cursor:pointer;aspect-ratio:4/3}
+.artwork-card img{width:100%;height:100%;object-fit:cover;transition:all .6s;opacity:.9}
+.artwork-card:hover img{transform:scale(1.05);opacity:.45}
+.artwork-info{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(transparent,rgba(10,10,10,.9));transform:translateY(30%);transition:transform .4s}
+.artwork-card:hover .artwork-info{transform:translateY(0)}
+.artwork-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:#f5f0e8;margin-bottom:.3rem}
+.artwork-price{font-size:.82rem;color:var(--warm)}
+.artwork-desc{font-size:.78rem;color:rgba(245,240,232,.6);margin-top:.4rem;line-height:1.6;opacity:0;transition:opacity .4s .1s}
+.artwork-card:hover .artwork-desc{opacity:1}
+.artwork-del{position:absolute;top:.6rem;right:.6rem;background:rgba(180,0,0,.85);color:#fff;border:none;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.8rem;display:none;z-index:10;align-items:center;justify-content:center}
+.admin-mode .artwork-del{display:flex}
+.zoom-btn{position:absolute;top:.6rem;left:.6rem;background:rgba(10,10,10,.6);color:#fff;border:none;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.artwork-card:hover .zoom-btn{opacity:1}
+
+/* PRICING PAGE */
+#pricing{background:var(--cream)}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem}
+.price-card{background:var(--light);padding:2rem;border:1px solid rgba(200,169,110,.2);transition:all .3s;position:relative;overflow:hidden}
+.price-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--warm)}
+.price-card:hover{border-color:var(--warm);transform:translateY(-3px);box-shadow:0 12px 40px rgba(200,169,110,.12)}
+.price-card h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;margin-bottom:.5rem}
+.price-amount{font-size:1.6rem;font-weight:300;color:var(--warm);font-family:'Cormorant Garamond',serif;margin-bottom:.8rem}
+.price-desc{font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.price-features{list-style:none;margin-bottom:1.8rem}
+.price-features li{font-size:.8rem;color:#555;padding:.3rem 0;border-bottom:1px solid rgba(200,169,110,.1);display:flex;align-items:center;gap:.5rem}
+.price-features li::before{content:'✦';color:var(--warm);font-size:.6rem}
+.btn-order{width:100%;padding:.9rem;background:var(--ink);color:#fff;border:none;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.15em;cursor:pointer;text-transform:uppercase;transition:background .3s}
+.btn-order:hover{background:#333}
+
+/* ORDER FORM */
+.order-overlay{display:none;position:fixed;inset:0;z-index:400;background:rgba(10,10,10,.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem}
+.order-overlay.open{display:flex}
+.order-box{background:#fff;width:min(520px,95vw);padding:2.5rem;max-height:90vh;overflow-y:auto}
+.order-box h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:.3rem}
+.order-box p{font-size:.82rem;color:var(--muted);margin-bottom:2rem}
+.form-group{margin-bottom:1.2rem}
+.form-group label{display:block;font-size:.68rem;letter-spacing:.15em;color:var(--muted);margin-bottom:.5rem;text-transform:uppercase}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:.85rem 1rem;border:1px solid #ddd;font-family:'Jost',sans-serif;font-size:.9rem;outline:none;transition:border-color .3s;resize:none;background:#fff}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--warm)}
+.order-actions{display:flex;gap:1rem;margin-top:1.5rem}
+.btn-send{flex:1;padding:1rem;background:var(--ink);color:#fff;border:none;font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.15em;cursor:pointer;text-transform:uppercase;transition:background .3s}
+.btn-send:hover{background:#333}
+.btn-cancel{padding:1rem 1.5rem;background:#f0f0f0;color:#555;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:.78rem}
+
+/* SOCIAL */
+#social{background:var(--ink);color:var(--light)}
+#social .section-title{color:var(--light)}
+#social .section-line{background:rgba(200,169,110,.3)}
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.social-card{border:1px solid rgba(200,169,110,.2);padding:2rem;transition:border-color .3s;text-decoration:none;color:var(--light);display:block}
+.social-card:hover{border-color:var(--warm)}
+.social-icon{font-size:2rem;margin-bottom:1rem}
+.social-card h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;margin-bottom:.5rem}
+.social-card p{font-size:.82rem;color:rgba(245,240,232,.5);margin-bottom:1.2rem}
+.social-handle{font-size:.8rem;color:var(--warm);letter-spacing:.08em}
+.social-link-btn{display:inline-block;margin-top:1rem;padding:.7rem 1.5rem;border:1px solid var(--warm);color:var(--warm);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:all .3s}
+.social-link-btn:hover{background:var(--warm);color:var(--ink)}
+
+/* UPLOAD */
+#upload{background:var(--cream)}
+.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.upload-area{border:1.5px dashed rgba(200,169,110,.5);padding:2.5rem;text-align:center;cursor:pointer;transition:all .3s;background:var(--light);position:relative}
+.upload-area:hover{border-color:var(--warm)}
+.upload-icon{font-size:2.2rem;margin-bottom:.8rem;opacity:.4}
+.upload-area h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;margin-bottom:.4rem}
+.upload-area p{font-size:.78rem;color:var(--muted)}
+.upload-area input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.fg{margin-bottom:1.2rem}
+.fg label{display:block;font-size:.68rem;letter-spacing:.15em;color:var(--muted);margin-bottom:.5rem;text-transform:uppercase}
+.fg input,.fg textarea{width:100%;padding:.85rem 1rem;border:1px solid rgba(138,128,112,.25);background:var(--light);font-family:'Jost',sans-serif;font-size:.88rem;color:var(--ink);outline:none;transition:border-color .3s;resize:none}
+.fg input:focus,.fg textarea:focus{border-color:var(--warm)}
+.btn-add{width:100%;padding:1rem;background:var(--ink);color:#fff;border:none;font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.18em;cursor:pointer;transition:background .3s;text-transform:uppercase}
+.btn-add:hover{background:#333}
+.preview-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-top:1.2rem}
+.preview-item{aspect-ratio:1;overflow:hidden}
+.preview-item img{width:100%;height:100%;object-fit:cover}
+
+/* ABOUT */
+#about{background:var(--ink);color:var(--light)}
+#about .section-title{color:var(--light)}
+#about .section-line{background:rgba(200,169,110,.3)}
+.about-grid{display:grid;grid-template-columns:1fr 2fr;gap:5rem;align-items:center}
+.about-stat{border-top:1px solid rgba(200,169,110,.3);padding-top:1.2rem;margin-bottom:1.8rem}
+.about-stat-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--warm)}
+.about-stat-label{font-size:.72rem;letter-spacing:.15em;color:rgba(245,240,232,.45);text-transform:uppercase}
+.about-text{font-size:1rem;line-height:2;color:rgba(245,240,232,.75)}
+.about-text p{margin-bottom:1.2rem}
+
+/* CONTACT */
+.contact-strip{background:var(--warm);padding:3.5rem;display:flex;justify-content:space-between;align-items:center}
+.contact-strip h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--ink)}
+.contact-email-link{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px}
+
+/* FOOTER */
+footer{background:var(--ink);padding:1.8rem 3rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(200,169,110,.15)}
+footer p{font-size:.72rem;color:rgba(245,240,232,.3);letter-spacing:.08em}
+
+/* ZOOM MODAL */
+.zoom-modal{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.97);align-items:center;justify-content:center}
+.zoom-modal.open{display:flex}
+.zoom-modal img{max-width:95vw;max-height:92vh;object-fit:contain;cursor:zoom-in;transition:transform .3s}
+.zoom-modal img.zoomed{transform:scale(1.8);cursor:zoom-out}
+.zoom-close{position:fixed;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.5);font-size:1.5rem;cursor:pointer}
+.zoom-close:hover{color:#fff}
+.zoom-nav{position:fixed;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.08);border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:.8rem 1rem;transition:background .2s}
+.zoom-nav:hover{background:rgba(255,255,255,.2)}
+.zoom-prev{left:1rem}
+.zoom-next{right:1rem}
+
+/* ARTWORK MODAL */
+.modal{display:none;position:fixed;inset:0;z-index:300;background:rgba(10,10,10,.95);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:2rem}
+.modal.active{display:flex}
+.modal-content{max-width:860px;width:100%;display:grid;grid-template-columns:3fr 2fr;gap:2.5rem;align-items:center}
+.modal-img{width:100%;max-height:68vh;object-fit:contain;cursor:zoom-in}
+.modal-info{color:var(--light)}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;margin-bottom:.4rem}
+.modal-price{color:var(--warm);font-size:1.1rem;margin-bottom:1.2rem}
+.modal-desc{font-size:.88rem;line-height:1.8;color:rgba(245,240,232,.65);margin-bottom:1.8rem}
+.modal-actions{display:flex;flex-direction:column;gap:.8rem}
+.modal-buy{padding:.85rem 1.8rem;border:1px solid var(--warm);color:var(--warm);font-size:.72rem;letter-spacing:.12em;cursor:pointer;text-transform:uppercase;background:transparent;font-family:'Jost',sans-serif;transition:all .3s}
+.modal-buy:hover{background:var(--warm);color:var(--ink)}
+.modal-wa{padding:.85rem 1.8rem;background:#25d366;color:#fff;border:none;font-size:.72rem;letter-spacing:.12em;cursor:pointer;text-transform:uppercase;font-family:'Jost',sans-serif;transition:opacity .3s;text-decoration:none;text-align:center}
+.modal-wa:hover{opacity:.85}
+.modal-close{position:fixed;top:1.5rem;left:1.5rem;background:none;border:none;color:rgba(245,240,232,.45);font-size:.9rem;cursor:pointer;font-family:'Jost',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.modal-close:hover{color:var(--light)}
+
+/* NOTIF */
+.notif{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:var(--light);padding:.9rem 2rem;font-size:.82rem;transition:transform .4s;z-index:700;border-bottom:2px solid var(--warm);white-space:nowrap}
+.notif.show{transform:translateX(-50%) translateY(0)}
+
+/* ADMIN PANEL */
+.admin-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(10,10,10,.65);backdrop-filter:blur(6px)}
+.admin-overlay.open{display:flex;align-items:center;justify-content:center;padding:1rem}
+.admin-panel{background:#fff;width:min(880px,96vw);max-height:90vh;overflow-y:auto;border-radius:1px;box-shadow:0 40px 100px rgba(0,0,0,.5)}
+.admin-header{background:var(--ink);color:var(--light);padding:1.4rem 1.8rem;display:flex;justify-content:space-between;align-items:center}
+.admin-header h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;letter-spacing:.08em}
+.admin-header button{background:none;border:none;color:rgba(255,255,255,.4);font-size:1.1rem;cursor:pointer}
+.admin-header button:hover{color:#fff}
+.admin-tabs{display:flex;border-bottom:1px solid #eee;overflow-x:auto}
+.admin-tab{padding:.9rem 1.3rem;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none;background:none;color:#999;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.admin-tab.active{color:var(--ink);border-bottom-color:var(--warm)}
+.admin-body{padding:1.8rem}
+.admin-section{display:none}
+.admin-section.active{display:block}
+.color-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.color-row{display:flex;align-items:center;gap:1rem;padding:.9rem;border:1px solid #eee}
+.color-row label{flex:1;font-size:.78rem;color:#555}
+.color-row input[type="color"]{width:42px;height:34px;border:1px solid #ddd;cursor:pointer;padding:2px}
+.text-row{margin-bottom:1.1rem}
+.text-row label{display:block;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:#999;margin-bottom:.45rem}
+.text-row input,.text-row textarea{width:100%;padding:.8rem 1rem;border:1px solid #ddd;font-family:'Jost',sans-serif;font-size:.88rem;outline:none;resize:vertical}
+.text-row input:focus,.text-row textarea:focus{border-color:var(--warm)}
+.social-inputs{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.8rem}
+.stat-card{background:var(--ink);color:var(--light);padding:1.4rem;text-align:center}
+.stat-card .num{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:300;color:var(--warm)}
+.stat-card .lbl{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:.3rem}
+.visit-log{border:1px solid #eee;overflow:hidden}
+.visit-row{display:flex;justify-content:space-between;padding:.75rem 1rem;border-bottom:1px solid #f5f5f5;font-size:.8rem;color:#666}
+.visit-row:last-child{border-bottom:none}
+.visit-row span:first-child{color:var(--ink);font-weight:500}
+.admin-save{margin-top:1.8rem;display:flex;gap:.8rem}
+.btn-save{flex:1;padding:1rem;background:var(--ink);color:#fff;border:none;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.18em;cursor:pointer;text-transform:uppercase;transition:background .3s}
+.btn-save:hover{background:#333}
+.btn-reset{padding:1rem 1.3rem;background:#eee;color:#666;border:none;font-family:'Jost',sans-serif;font-size:.75rem;cursor:pointer}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{opacity:0;animation:fadeUp .8s ease forwards}
+.fade-up:nth-child(1){animation-delay:.1s}.fade-up:nth-child(2){animation-delay:.25s}.fade-up:nth-child(3){animation-delay:.4s}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.2rem}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr}
+  .hero-image{height:45vh}
+  .hero-text{padding:3rem 1.5rem}
+  section{padding:4rem 1.5rem}
+  .gallery-grid{grid-template-columns:1fr 1fr}
+  .upload-grid,.about-grid,.social-grid,.modal-content{grid-template-columns:1fr}
+  .contact-strip{flex-direction:column;gap:1.2rem;text-align:center}
+  footer{flex-direction:column;gap:.8rem;text-align:center}
+  .color-grid,.social-inputs,.stats-grid{grid-template-columns:1fr}
+  .admin-save{flex-direction:column}
+  .zoom-nav{display:none}
+}
+</style>
+</head>
+<body id="body">
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" id="site-logo">Daniel Ahmed · دانيال أحمد</a>
+  <ul class="nav-links">
+    <li><a href="#gallery" data-en="Works" data-ar="الأعمال">Works</a></li>
+    <li><a href="#pricing" data-en="Prices" data-ar="الأسعار">Prices</a></li>
+    <li><a href="#social" data-en="Social" data-ar="التواصل">Social</a></li>
+    <li><a href="#about" data-en="About" data-ar="عن الفنان">About</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-lang" onclick="toggleLang()" id="lang-btn">عربي</button>
+    <button class="btn-admin" onclick="openAdmin()">⚙ Admin</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <p class="hero-label fade-up" id="hero-label">Algerian Visual Artist · فنان تشكيلي جزائري</p>
+    <h1 class="hero-title fade-up" id="hero-title-el">Art that touches<br><em>the soul</em></h1>
+    <p class="hero-bio fade-up" id="hero-bio-el">Works where surrealism meets identity and memory — paintings that carry deep questions about humanity and its place in the universe.</p>
+    <a href="#gallery" class="hero-cta" id="hero-cta-el">Explore Works</a>
+  </div>
+  <div class="hero-image">
+    <img src="" alt="Daniel Ahmed" onerror="this.style.display='none'" id="hero-img">
+    <div class="hero-overlay"><p id="hero-caption">The Night City — Daniel Ahmed</p></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2 class="section-title" data-en="Gallery" data-ar="معرض الأعمال">Gallery</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2 class="section-title" data-en="Prices & Purchase" data-ar="الأسعار والشراء">Prices & Purchase</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="pricing-grid" id="pricing-grid"></div>
+</section>
+
+<!-- SOCIAL -->
+<section id="social">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2 class="section-title" data-en="Follow & Contact" data-ar="تابعني وتواصل">Follow & Contact</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="social-grid">
+    <a class="social-card" id="ig-card" href="#" target="_blank">
+      <div class="social-icon">📸</div>
+      <h3>Instagram</h3>
+      <p data-en="Follow my latest works and stories" data-ar="تابع أحدث أعمالي وقصصي">Follow my latest works and stories</p>
+      <div class="social-handle" id="ig-handle">@danielahmed.art</div>
+      <div class="social-link-btn" data-en="Follow on Instagram" data-ar="تابع على إنستغرام">Follow on Instagram</div>
+    </a>
+    <a class="social-card" id="wa-card" href="#" target="_blank">
+      <div class="social-icon">💬</div>
+      <h3>WhatsApp</h3>
+      <p data-en="Contact me directly to purchase or inquire" data-ar="تواصل معي مباشرة للشراء أو الاستفسار">Contact me directly to purchase or inquire</p>
+      <div class="social-handle" id="wa-handle">+213 XX XXX XXXX</div>
+      <div class="social-link-btn" data-en="Message on WhatsApp" data-ar="راسلني على واتساب">Message on WhatsApp</div>
+    </a>
+  </div>
+</section>
+
+<!-- UPLOAD -->
+<section id="upload">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2 class="section-title" data-en="Add New Work" data-ar="إضافة عمل جديد">Add New Work</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="upload-grid">
+    <div>
+      <div class="upload-area">
+        <input type="file" id="file-input" accept="image/*" multiple>
+        <div class="upload-icon">⊕</div>
+        <h3 data-en="Upload Painting" data-ar="رفع اللوحة">Upload Painting</h3>
+        <p data-en="Drag image here or click to select" data-ar="اسحب الصورة هنا أو انقر للاختيار">Drag image here or click to select</p>
+      </div>
+      <div class="preview-gallery" id="preview-gallery"></div>
+    </div>
+    <div>
+      <div class="fg"><label data-en="Painting Title" data-ar="اسم اللوحة">Painting Title</label><input type="text" id="artwork-name" placeholder="e.g. The Night City"></div>
+      <div class="fg"><label data-en="Description" data-ar="الوصف">Description</label><textarea id="artwork-desc" rows="3" placeholder="Describe this work..."></textarea></div>
+      <div class="fg"><label data-en="Price (USD)" data-ar="السعر (دولار)">Price (USD)</label><input type="text" id="artwork-price" placeholder="e.g. $500 - $800"></div>
+      <button class="btn-add" onclick="addArtwork()" data-en="Add to Gallery" data-ar="إضافة للمعرض">Add to Gallery</button>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <span class="section-number">05</span>
+    <h2 class="section-title" data-en="About the Artist" data-ar="عن الفنان">About the Artist</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div>
+      <div class="about-stat"><div class="about-stat-num">∞</div><div class="about-stat-label" data-en="Limitless Vision" data-ar="رؤية لا حدود لها">Limitless Vision</div></div>
+      <div class="about-stat"><div class="about-stat-num" id="artwork-count">0</div><div class="about-stat-label" data-en="Artworks" data-ar="عمل فني">Artworks</div></div>
+    </div>
+    <div class="about-text" id="about-text-el">
+      <p>Daniel Ahmed is an Algerian visual artist who blends surrealism and expressionism in a unique visual style. His works carry deep questions about identity, surveillance, and the human essence.</p>
+      <p>In his paintings, vortices, eyes, and geometric forms converge to create worlds that defy reality — inviting the viewer to contemplate what lies beyond the visible.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-strip" id="contact">
+  <h2 id="contact-title-el">Like a piece?<br>Get in touch.</h2>
+  <a href="mailto:daniel@artist.com" class="contact-email-link" id="contact-email-el">daniel@artist.com</a>
+</div>
+
+<footer>
+  <p>© 2026 Daniel Ahmed — All rights reserved</p>
+  <p>Visual Artist · Algeria · دانيال أحمد</p>
+</footer>
+
+<!-- ARTWORK MODAL -->
+<div class="modal" id="modal">
+  <button class="modal-close" onclick="closeModal()">✕ Close</button>
+  <div class="modal-content">
+    <img class="modal-img" id="modal-img" src="" alt="" onclick="openZoomFromModal()">
+    <div class="modal-info">
+      <h2 class="modal-title" id="modal-title"></h2>
+      <p class="modal-price" id="modal-price"></p>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-actions">
+        <button class="modal-buy" onclick="openOrder()" data-en="Request Purchase" data-ar="طلب شراء">Request Purchase</button>
+        <a class="modal-wa" id="modal-wa-btn" href="#" target="_blank" data-en="💬 WhatsApp" data-ar="💬 واتساب">💬 WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ZOOM MODAL -->
+<div class="zoom-modal" id="zoom-modal">
+  <button class="zoom-close" onclick="closeZoom()">✕</button>
+  <button class="zoom-nav zoom-prev" onclick="zoomNav(-1)">‹</button>
+  <img id="zoom-img" src="" alt="" onclick="toggleZoom()">
+  <button class="zoom-nav zoom-next" onclick="zoomNav(1)">›</button>
+</div>
+
+<!-- ORDER FORM -->
+<div class="order-overlay" id="order-overlay">
+  <div class="order-box">
+    <h2 data-en="Purchase Request" data-ar="طلب شراء">Purchase Request</h2>
+    <p id="order-subtitle">Please fill in your details and we'll get back to you shortly.</p>
+    <div class="form-group"><label data-en="Full Name" data-ar="الاسم الكامل">Full Name</label><input type="text" id="order-name" placeholder="Your name"></div>
+    <div class="form-group"><label data-en="Email" data-ar="البريد الإلكتروني">Email</label><input type="email" id="order-email" placeholder="your@email.com"></div>
+    <div class="form-group"><label data-en="Phone / WhatsApp" data-ar="الهاتف / واتساب">Phone / WhatsApp</label><input type="text" id="order-phone" placeholder="+1 234 567 8900"></div>
+    <div class="form-group"><label data-en="Artwork" data-ar="اللوحة">Artwork</label><input type="text" id="order-artwork" readonly></div>
+    <div class="form-group"><label data-en="Message" data-ar="الرسالة">Message</label><textarea id="order-msg" rows="3" placeholder="Any questions or special requests..."></textarea></div>
+    <div class="order-actions">
+      <button class="btn-send" onclick="sendOrder()" data-en="Send Request" data-ar="إرسال الطلب">Send Request</button>
+      <button class="btn-cancel" onclick="closeOrder()" data-en="Cancel" data-ar="إلغاء">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h2>⚙ Control Panel — Daniel Ahmed</h2>
+      <button onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchTab('colors',this)">🎨 Colors</button>
+      <button class="admin-tab" onclick="switchTab('text',this)">✏️ Text</button>
+      <button class="admin-tab" onclick="switchTab('social-tab',this)">🔗 Social</button>
+      <button class="admin-tab" onclick="switchTab('pricing-tab',this)">💰 Prices</button>
+      <button class="admin-tab" onclick="switchTab('stats',this)">📊 Stats</button>
+    </div>
+    <div class="admin-body">
+
+      <!-- COLORS -->
+      <div class="admin-section active" id="tab-colors">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.3rem;margin-bottom:1.2rem">Site Colors</h3>
+        <div class="color-grid">
+          <div class="color-row"><label>Background</label><input type="color" id="c-light" value="#faf8f4" oninput="applyColor('--light',this.value)"></div>
+          <div class="color-row"><label>Main Text</label><input type="color" id="c-ink" value="#0a0a0a" oninput="applyColor('--ink',this.value)"></div>
+          <div class="color-row"><label>Gold Accent</label><input type="color" id="c-warm" value="#c8a96e" oninput="applyColor('--warm',this.value)"></div>
+          <div class="color-row"><label>Subtitle Text</label><input type="color" id="c-muted" value="#8a8070" oninput="applyColor('--muted',this.value)"></div>
+        </div>
+        <div class="admin-save">
+          <button class="btn-save" onclick="saveSettings()">Save Colors</button>
+          <button class="btn-reset" onclick="resetColors()">Reset</button>
+        </div>
+      </div>
+
+      <!-- TEXT -->
+      <div class="admin-section" id="tab-text">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.3rem;margin-bottom:1.2rem">Website Text</h3>
+        <div class="text-row"><label>Logo Name</label><input type="text" id="t-logo" placeholder="Daniel Ahmed · دانيال أحمد"></div>
+        <div class="text-row"><label>Hero Label</label><input type="text" id="t-label"></div>
+        <div class="text-row"><label>Hero Title (use &lt;br&gt; for line break, &lt;em&gt; for italic gold)</label><input type="text" id="t-title"></div>
+        <div class="text-row"><label>Hero Description</label><textarea id="t-bio" rows="3"></textarea></div>
+        <div class="text-row"><label>Hero Button</label><input type="text" id="t-cta"></div>
+        <div class="text-row"><label>Contact Title</label><input type="text" id="t-contact"></div>
+        <div class="text-row"><label>Contact Email</label><input type="text" id="t-email"></div>
+        <div class="text-row"><label>About Bio</label><textarea id="t-about" rows="4"></textarea></div>
+        <div class="admin-save"><button class="btn-save" onclick="saveText()">Apply Text</button></div>
+      </div>
+
+      <!-- SOCIAL -->
+      <div class="admin-section" id="tab-social-tab">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.3rem;margin-bottom:1.2rem">Social Links</h3>
+        <div class="social-inputs">
+          <div class="text-row"><label>Instagram Username</label><input type="text" id="s-ig" placeholder="@danielahmed.art"></div>
+          <div class="text-row"><label>WhatsApp Number</label><input type="text" id="s-wa" placeholder="+213XXXXXXXXX"></div>
+        </div>
+        <p style="font-size:.78rem;color:#aaa;margin-bottom:1rem">Enter WhatsApp with country code, e.g. +213551234567</p>
+        <div class="admin-save"><button class="btn-save" onclick="saveSocial()">Save Social Links</button></div>
+      </div>
+
+      <!-- PRICING -->
+      <div class="admin-section" id="tab-pricing-tab">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.3rem;margin-bottom:1.2rem">Pricing Cards</h3>
+        <p style="font-size:.78rem;color:#aaa;margin-bottom:1.5rem">Add pricing tiers that appear on your site</p>
+        <div id="pricing-editor"></div>
+        <button onclick="addPricingTier()" style="margin-top:1rem;padding:.8rem 1.5rem;border:1px dashed #ccc;background:none;cursor:pointer;font-size:.78rem;letter-spacing:.1em;width:100%;text-transform:uppercase">+ Add Tier</button>
+        <div class="admin-save"><button class="btn-save" onclick="savePricing()">Save Prices</button></div>
+      </div>
+
+      <!-- STATS -->
+      <div class="admin-section" id="tab-stats">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.3rem;margin-bottom:1.2rem">Visitor Statistics</h3>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="num" id="stat-visits">0</div><div class="lbl">Visits</div></div>
+          <div class="stat-card"><div class="num" id="stat-views">0</div><div class="lbl">Artwork Views</div></div>
+          <div class="stat-card"><div class="num" id="stat-orders">0</div><div class="lbl">Purchase Requests</div></div>
+        </div>
+        <h4 style="font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:#999;margin-bottom:.7rem">Recent Activity</h4>
+        <div class="visit-log" id="visit-log"></div>
+        <div class="admin-save"><button class="btn-reset" onclick="clearStats()">Clear Stats</button></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="notif" id="notif"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────
+let artworks = JSON.parse(localStorage.getItem('da_artworks') || '[]');
+let settings = JSON.parse(localStorage.getItem('da_settings') || '{}');
+let stats    = JSON.parse(localStorage.getItem('da_stats') || '{"visits":0,"views":0,"orders":0,"log":[]}');
+let lang     = localStorage.getItem('da_lang') || 'en';
+
+const defaultPricing = [
+  { id:'p1', name:'Small Work', nameAr:'عمل صغير', price:'$80 – $200', desc:'Intimate paintings, ideal for home and gifting.', descAr:'لوحات صغيرة، مثالية للهدايا والمنازل.', features:['Up to 30×40 cm','Signed by artist','Certificate of authenticity'] },
+  { id:'p2', name:'Medium Work', nameAr:'عمل متوسط', price:'$200 – $600', desc:'Mid-size expressive pieces with full detail.', descAr:'لوحات متوسطة بتفاصيل تعبيرية كاملة.', features:['40×60 cm to 60×80 cm','Signed + framed option','Free shipping in Algeria'] },
+  { id:'p3', name:'Large Work', nameAr:'عمل كبير', price:'$600 – $1500', desc:'Statement canvases for galleries and collectors.', descAr:'لوحات كبيرة للمقتنين والمعارض العالمية.', features:['80×100 cm and above','Premium materials','International shipping available'] }
+];
+
+let pricing = JSON.parse(localStorage.getItem('da_pricing') || JSON.stringify(defaultPricing));
+
+// ── INIT ─────────────────────────────────────────────
+window.addEventListener('load', () => {
+  if (artworks.length === 0) {
+    artworks.push({ id:'default_1', name:'The Night City', nameAr:'المدينة الليلية', desc:'The most ambitious in my collection — vortices, souls, minarets, arches. A Chagall-like layering of intentional chaos.', descAr:'الأكثر طموحاً في مجموعتي — دوامات، أرواح، مآذن، أقواس.', price:'$500 – $1000', src:null });
+    localStorage.setItem('da_artworks', JSON.stringify(artworks));
+  }
+  applySettings();
+  applyLang();
+  renderGallery();
+  renderPricing();
+  trackVisit();
+});
+
+// ── LANG ─────────────────────────────────────────────
+function toggleLang() {
+  lang = lang === 'en' ? 'ar' : 'en';
+  localStorage.setItem('da_lang', lang);
+  applyLang();
+}
+
+function applyLang() {
+  const isAr = lang === 'ar';
+  document.getElementById('body').classList.toggle('rtl', isAr);
+  document.documentElement.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+  document.getElementById('lang-btn').textContent = isAr ? 'English' : 'عربي';
+
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = isAr ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+  });
+
+  // Hero dynamic
+  const s = settings;
+  if (isAr) {
+    if (s.titleAr) document.getElementById('hero-title-el').innerHTML = s.titleAr;
+    else document.getElementById('hero-title-el').innerHTML = 'فن يلمس<br><em>الروح</em>';
+    if (s.bioAr) document.getElementById('hero-bio-el').textContent = s.bioAr;
+    else document.getElementById('hero-bio-el').textContent = 'أعمال تتقاطع فيها السريالية مع الهوية والذاكرة — لوحات تحمل أسئلة عميقة عن الإنسان ومكانه في الكون.';
+    if (s.ctaAr) document.getElementById('hero-cta-el').textContent = s.ctaAr;
+    else document.getElementById('hero-cta-el').textContent = 'اكتشف الأعمال';
+    if (s.contactAr) document.getElementById('contact-title-el').innerHTML = s.contactAr;
+    else document.getElementById('contact-title-el').innerHTML = 'أعجبتك لوحة؟<br>تواصل معنا';
+  } else {
+    if (s.title) document.getElementById('hero-title-el').innerHTML = s.title;
+    else document.getElementById('hero-title-el').innerHTML = 'Art that touches<br><em>the soul</em>';
+    if (s.bio) document.getElementById('hero-bio-el').textContent = s.bio;
+    else document.getElementById('hero-bio-el').textContent = 'Works where surrealism meets identity and memory — paintings that carry deep questions about humanity.';
+    if (s.cta) document.getElementById('hero-cta-el').textContent = s.cta;
+    else document.getElementById('hero-cta-el').textContent = 'Explore Works';
+    if (s.contact) document.getElementById('contact-title-el').innerHTML = s.contact;
+    else document.getElementById('contact-title-el').innerHTML = 'Like a piece?<br>Get in touch.';
+  }
+  renderGallery();
+  renderPricing();
+}
+
+// ── GALLERY ──────────────────────────────────────────
+function renderGallery() {
+  const grid = document.getElementById('gallery-grid');
+  grid.innerHTML = '';
+  artworks.forEach((art, i) => {
+    const card = document.createElement('div');
+    card.className = 'artwork-card';
+    const displayName = (lang === 'ar' && art.nameAr) ? art.nameAr : art.name;
+    const displayDesc = (lang === 'ar' && art.descAr) ? art.descAr : art.desc;
+    card.innerHTML = `
+      <button class="zoom-btn" onclick="openZoom(${i})">🔍</button>
+      <button class="artwork-del" onclick="deleteArtwork('${art.id}',event)">✕</button>
+      ${art.src ? `<img src="${art.src}" alt="${displayName}">` : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1410,#2d1f0e);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Cormorant Garamond',serif;color:rgba(200,169,110,.3);font-size:3rem;">✦</span></div>`}
+      <div class="artwork-info">
+        <h3 class="artwork-name">${displayName}</h3>
+        <p class="artwork-price">${art.price}</p>
+        <p class="artwork-desc">${displayDesc}</p>
+      </div>`;
+    card.addEventListener('click', e => { if(!e.target.closest('.artwork-del') && !e.target.closest('.zoom-btn')) openModal(i); });
+    grid.appendChild(card);
+  });
+  document.getElementById('artwork-count').textContent = artworks.length;
+}
+
+function deleteArtwork(id, e) {
+  e.stopPropagation();
+  if (!confirm('Delete this artwork?')) return;
+  artworks = artworks.filter(a => a.id !== id);
+  localStorage.setItem('da_artworks', JSON.stringify(artworks));
+  renderGallery();
+  showNotif(lang === 'ar' ? 'تم حذف اللوحة' : 'Artwork removed');
+}
+
+// ── UPLOAD ───────────────────────────────────────────
+let uploadedImages = [];
+document.getElementById('file-input').addEventListener('change', function(e) {
+  Array.from(e.target.files).forEach(f => {
+    const r = new FileReader();
+    r.onload = ev => { uploadedImages.push(ev.target.result); renderPreviews(); };
+    r.readAsDataURL(f);
+  });
+});
+function renderPreviews() {
+  document.getElementById('preview-gallery').innerHTML = uploadedImages.map((s,i) =>
+    `<div class="preview-item"><img src="${s}" alt="${i}"></div>`).join('');
+}
+function addArtwork() {
+  const name = document.getElementById('artwork-name').value.trim();
+  const desc = document.getElementById('artwork-desc').value.trim();
+  const price = document.getElementById('artwork-price').value.trim();
+  if (!name) { showNotif(lang==='ar'?'أدخل اسم اللوحة':'Enter a title'); return; }
+  if (!price) { showNotif(lang==='ar'?'أدخل السعر':'Enter a price'); return; }
+  artworks.unshift({ id:Date.now().toString(), name, nameAr:name, desc:desc||'A work by Daniel Ahmed', descAr:desc||'عمل من أعمال دانيال أحمد', price, src:uploadedImages[0]||null });
+  localStorage.setItem('da_artworks', JSON.stringify(artworks));
+  renderGallery();
+  ['artwork-name','artwork-desc','artwork-price','file-input'].forEach(id => document.getElementById(id).value='');
+  uploadedImages=[]; renderPreviews();
+  showNotif(lang==='ar'?'✓ تمت الإضافة':'✓ Artwork added');
+  document.getElementById('gallery').scrollIntoView({behavior:'smooth'});
+}
+
+// ── PRICING ──────────────────────────────────────────
+function renderPricing() {
+  const grid = document.getElementById('pricing-grid');
+  grid.innerHTML = pricing.map(p => `
+    <div class="price-card">
+      <h3>${lang==='ar' && p.nameAr ? p.nameAr : p.name}</h3>
+      <div class="price-amount">${p.price}</div>
+      <p class="price-desc">${lang==='ar' && p.descAr ? p.descAr : p.desc}</p>
+      <ul class="price-features">${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+      <button class="btn-order" onclick="openOrderForTier('${p.name}')">${lang==='ar'?'طلب شراء':'Purchase Request'}</button>
+    </div>`).join('');
+}
+
+// ── ZOOM ─────────────────────────────────────────────
+let currentZoomIndex = 0;
+function openZoom(index) {
+  currentZoomIndex = index;
+  const art = artworks[index];
+  if (!art.src) return;
+  document.getElementById('zoom-img').src = art.src;
+  document.getElementById('zoom-img').classList.remove('zoomed');
+  document.getElementById('zoom-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function openZoomFromModal() {
+  const src = document.getElementById('modal-img').src;
+  if (!src) return;
+  document.getElementById('zoom-img').src = src;
+  document.getElementById('zoom-img').classList.remove('zoomed');
+  document.getElementById('zoom-modal').classList.add('open');
+}
+function closeZoom() {
+  document.getElementById('zoom-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function toggleZoom() {
+  document.getElementById('zoom-img').classList.toggle('zoomed');
+}
+function zoomNav(dir) {
+  const withSrc = artworks.filter(a => a.src);
+  if (withSrc.length === 0) return;
+  const currentSrcIndex = withSrc.findIndex(a => a.id === artworks[currentZoomIndex]?.id);
+  const next = (currentSrcIndex + dir + withSrc.length) % withSrc.length;
+  const newIndex = artworks.findIndex(a => a.id === withSrc[next].id);
+  openZoom(newIndex);
+}
+document.getElementById('zoom-modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeZoom(); });
+
+// ── MODAL ─────────────────────────────────────────────
+function openModal(i) {
+  const art = artworks[i];
+  const waNum = (settings.whatsapp || '').replace(/\D/g,'');
+  const displayName = (lang==='ar' && art.nameAr) ? art.nameAr : art.name;
+  const displayDesc = (lang==='ar' && art.descAr) ? art.descAr : art.desc;
+  document.getElementById('modal-img').src = art.src || '';
+  document.getElementById('modal-img').style.display = art.src ? 'block' : 'none';
+  document.getElementById('modal-title').textContent = displayName;
+  document.getElementById('modal-price').textContent = art.price;
+  document.getElementById('modal-desc').textContent = displayDesc;
+  document.getElementById('order-artwork').value = displayName;
+  const waMsg = encodeURIComponent(`Hi Daniel, I'm interested in: "${displayName}" (${art.price})`);
+  document.getElementById('modal-wa-btn').href = waNum ? `https://wa.me/${waNum}?text=${waMsg}` : '#';
+  document.getElementById('modal-wa-btn').textContent = lang==='ar' ? '💬 واتساب' : '💬 WhatsApp';
+  document.getElementById('modal-buy').textContent = lang==='ar' ? 'طلب شراء' : 'Request Purchase';
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  // track
+  stats.views++;
+  stats.log.unshift({ time:new Date().toLocaleString(), action:`Viewed: "${displayName}"` });
+  if(stats.log.length>25) stats.log.pop();
+  localStorage.setItem('da_stats', JSON.stringify(stats));
+}
+function closeModal() { document.getElementById('modal').classList.remove('active'); document.body.style.overflow=''; }
+document.getElementById('modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+
+// ── ORDER ─────────────────────────────────────────────
+function openOrder() {
+  closeModal();
+  document.getElementById('order-overlay').classList.add('open');
+}
+function openOrderForTier(name) {
+  document.getElementById('order-artwork').value = name;
+  document.getElementById('order-overlay').classList.add('open');
+}
+function closeOrder() { document.getElementById('order-overlay').classList.remove('open'); }
+function sendOrder() {
+  const name  = document.getElementById('order-name').value.trim();
+  const email = document.getElementById('order-email').value.trim();
+  const art   = document.getElementById('order-artwork').value;
+  const msg   = document.getElementById('order-msg').value.trim();
+  const phone = document.getElementById('order-phone').value.trim();
+  if(!name||!email) { showNotif(lang==='ar'?'أدخل الاسم والبريد':'Enter name and email'); return; }
+  const waNum = (settings.whatsapp||'').replace(/\D/g,'');
+  const waText = encodeURIComponent(`New Purchase Request!\nArtwork: ${art}\nFrom: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage: ${msg}`);
+  const contactEmail = settings.email || 'daniel@artist.com';
+  const subject = encodeURIComponent(`Purchase Request: ${art}`);
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nArtwork: ${art}\n\n${msg}`);
+  if(waNum) window.open(`https://wa.me/${waNum}?text=${waText}`, '_blank');
+  else window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
+  stats.orders++;
+  stats.log.unshift({ time:new Date().toLocaleString(), action:`Purchase request: "${art}" from ${name}` });
+  if(stats.log.length>25) stats.log.pop();
+  localStorage.setItem('da_stats', JSON.stringify(stats));
+  closeOrder();
+  showNotif(lang==='ar'?'✓ تم إرسال الطلب!':'✓ Request sent!');
+}
+
+// ── SOCIAL ────────────────────────────────────────────
+function applySocial() {
+  const ig = settings.instagram || '@danielahmed.art';
+  const wa = settings.whatsapp || '+213 XX XXX XXXX';
+  const igHandle = ig.startsWith('@') ? ig : '@'+ig;
+  const waNum = wa.replace(/\D/g,'');
+  document.getElementById('ig-handle').textContent = igHandle;
+  document.getElementById('wa-handle').textContent = wa;
+  document.getElementById('ig-card').href = `https://instagram.com/${igHandle.replace('@','')}`;
+  document.getElementById('wa-card').href = waNum ? `https://wa.me/${waNum}` : '#';
+}
+
+// ── ADMIN ─────────────────────────────────────────────
+function openAdmin() {
+  loadAdminFields();
+  loadPricingEditor();
+  loadStats();
+  document.getElementById('admin-overlay').classList.add('open');
+}
+function closeAdmin() { document.getElementById('admin-overlay').classList.remove('open'); }
+function switchTab(name, btn) {
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='stats') loadStats();
+}
+
+function loadAdminFields() {
+  const s = settings;
+  const fields = {logo:'t-logo',label:'t-label',title:'t-title',bio:'t-bio',cta:'t-cta',contact:'t-contact',email:'t-email',about:'t-about'};
+  Object.entries(fields).forEach(([k,id]) => { if(s[k]) document.getElementById(id).value=s[k]; });
+  if(s.instagram) document.getElementById('s-ig').value = s.instagram;
+  if(s.whatsapp) document.getElementById('s-wa').value = s.whatsapp;
+  if(s.colors) {
+    if(s.colors.light) document.getElementById('c-light').value=s.colors.light;
+    if(s.colors.ink)   document.getElementById('c-ink').value=s.colors.ink;
+    if(s.colors.warm)  document.getElementById('c-warm').value=s.colors.warm;
+    if(s.colors.muted) document.getElementById('c-muted').value=s.colors.muted;
+  }
+}
+
+function loadPricingEditor() {
+  document.getElementById('pricing-editor').innerHTML = pricing.map((p,i) => `
+    <div style="border:1px solid #eee;padding:1rem;margin-bottom:.8rem;position:relative">
+      <button onclick="removePricingTier(${i})" style="position:absolute;top:.5rem;right:.5rem;background:none;border:none;cursor:pointer;color:#ccc;font-size:.9rem">✕</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+        <div class="text-row"><label>Name (EN)</label><input value="${p.name}" onchange="pricing[${i}].name=this.value"></div>
+        <div class="text-row"><label>Name (AR)</label><input value="${p.nameAr||''}" onchange="pricing[${i}].nameAr=this.value"></div>
+        <div class="text-row"><label>Price</label><input value="${p.price}" onchange="pricing[${i}].price=this.value"></div>
+        <div class="text-row"><label>Description</label><input value="${p.desc}" onchange="pricing[${i}].desc=this.value"></div>
+      </div>
+    </div>`).join('');
+}
+
+function addPricingTier() {
+  pricing.push({ id:Date.now().toString(), name:'New Tier', nameAr:'فئة جديدة', price:'$0', desc:'Description', descAr:'وصف', features:['Feature 1'] });
+  loadPricingEditor();
+}
+function removePricingTier(i) { pricing.splice(i,1); loadPricingEditor(); }
+function savePricing() { localStorage.setItem('da_pricing',JSON.stringify(pricing)); renderPricing(); showNotif('✓ Prices saved'); }
+
+function applyColor(v,val) { document.documentElement.style.setProperty(v,val); }
+function resetColors() {
+  const d={'--light':'#faf8f4','--ink':'#0a0a0a','--warm':'#c8a96e','--muted':'#8a8070'};
+  const ids={'--light':'c-light','--ink':'c-ink','--warm':'c-warm','--muted':'c-muted'};
+  Object.entries(d).forEach(([k,v])=>{ applyColor(k,v); document.getElementById(ids[k]).value=v; });
+  showNotif('Colors reset');
+}
+
+function saveText() {
+  const g=id=>document.getElementById(id).value.trim();
+  const map={logo:'t-logo',title:'t-title',bio:'t-bio',cta:'t-cta',label:'t-label',contact:'t-contact',email:'t-email',about:'t-about'};
+  Object.entries(map).forEach(([k,id])=>{ const v=g(id); if(v) settings[k]=v; });
+  applySettings();
+  applyLang();
+  localStorage.setItem('da_settings',JSON.stringify(settings));
+  showNotif('✓ Text updated');
+}
+
+function saveSocial() {
+  settings.instagram = document.getElementById('s-ig').value.trim();
+  settings.whatsapp  = document.getElementById('s-wa').value.trim();
+  applySocial();
+  localStorage.setItem('da_settings',JSON.stringify(settings));
+  showNotif('✓ Social links saved');
+}
+
+function saveSettings() {
+  settings.colors = {
+    light:document.getElementById('c-light').value,
+    ink:  document.getElementById('c-ink').value,
+    warm: document.getElementById('c-warm').value,
+    muted:document.getElementById('c-muted').value
+  };
+  localStorage.setItem('da_settings',JSON.stringify(settings));
+  showNotif('✓ Settings saved');
+}
+
+function applySettings() {
+  const s=settings;
+  if(s.colors){ if(s.colors.light) applyColor('--light',s.colors.light); if(s.colors.ink) applyColor('--ink',s.colors.ink); if(s.colors.warm) applyColor('--warm',s.colors.warm); if(s.colors.muted) applyColor('--muted',s.colors.muted); }
+  if(s.logo) document.getElementById('site-logo').textContent=s.logo;
+  if(s.label) document.getElementById('hero-label').textContent=s.label;
+  if(s.email){ const el=document.getElementById('contact-email-el'); el.textContent=s.email; el.href='mailto:'+s.email; }
+  if(s.about) document.getElementById('about-text-el').innerHTML=`<p>${s.about.replace(/\n/g,'</p><p>')}</p>`;
+  applySocial();
+}
+
+function trackVisit() {
+  stats.visits++;
+  stats.log.unshift({time:new Date().toLocaleString(),action:'Page visit'});
+  if(stats.log.length>25) stats.log.pop();
+  localStorage.setItem('da_stats',JSON.stringify(stats));
+}
+
+function loadStats() {
+  document.getElementById('stat-visits').textContent  = stats.visits;
+  document.getElementById('stat-views').textContent   = stats.views;
+  document.getElementById('stat-orders').textContent  = stats.orders||0;
+  const log=document.getElementById('visit-log');
+  log.innerHTML = stats.log.length ? stats.log.map(l=>`<div class="visit-row"><span>${l.action}</span><span style="font-size:.72rem;color:#aaa">${l.time}</span></div>`).join('') : '<div class="visit-row"><span>No activity yet</span></div>';
+}
+
+function clearStats() { stats={visits:0,views:0,orders:0,log:[]}; localStorage.setItem('da_stats',JSON.stringify(stats)); loadStats(); showNotif('Stats cleared'); }
+
+function showNotif(msg) {
+  const n=document.getElementById('notif'); n.textContent=msg; n.classList.add('show');
+  setTimeout(()=>n.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>
